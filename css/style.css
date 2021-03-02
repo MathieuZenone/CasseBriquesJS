@@ -9,3 +9,15 @@
    padding-left: 5%; 
    padding-right: 5%; 
 }
+
+#zoneDessin{
+    border: 1px solid black;
+    
+    width:50vw;
+    height:75vh;
+    display: flex;
+    margin:0 auto;
+    margin-top: 100px;
+    margin-bottom: 50px;
+    
+}
