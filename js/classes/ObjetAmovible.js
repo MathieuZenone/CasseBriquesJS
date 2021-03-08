@@ -52,7 +52,6 @@ class ObjetAmovible extends Objet{
     }
 
 
-
     nouvelPosition(){
       
         this.positionX += this.#directionX  * this.#vitesse ;

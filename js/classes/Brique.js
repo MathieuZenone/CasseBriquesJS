@@ -48,4 +48,24 @@ class Brique extends Objet{
         this.#vie = vie;
     }
 
+    retrancherVie(degat){
+        this.#vie = this.#vie - degat;
+    }
+
+    /**
+     * fonction dessinant une brique
+     * @param {*} ctx 
+     */
+    draw(ctx){
+        let epaisseurBordure = 10;
+        ctx.beginPath();
+        ctx.fillRect(this.positionX, this.positionY, this.#largeur, this.#hauteur);
+        ctx.clearRect(this.positionX+epaisseurBordure, this.positionY+epaisseurBordure, this.#largeur-epaisseurBordure*2, this.#hauteur-epaisseurBordure*2);
+        ctx.font = '20px serif';
+        ctx.fillText(this.#vie, this.positionX + 2*epaisseurBordure + 20, this.positionY+this.#hauteur/2 + 5);
+        ctx.fillStyle = this.couleur;
+        ctx.fill();
+        ctx.closePath();
+    }
+
 }

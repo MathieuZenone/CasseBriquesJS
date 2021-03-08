@@ -74,17 +74,28 @@ class Niveau {
      */
     async start(){
         this.generationNiveau();
-        let balle = new Balle(60,60,('#'+(Math.random()*0xFFFFFF<<0).toString(16)),3,0.9,1,25,5);
-        let balle2 = new Balle(600,60,('#'+(Math.random()*0xFFFFFF<<0).toString(16)),3,0.5,0.7357,25,5);
-        let balle3 = new Balle(60,600,('#'+(Math.random()*0xFFFFFF<<0).toString(16)),3,-1.2,0.7357,25,5);
-        let balle4 = new Balle(600,600,('#'+(Math.random()*0xFFFFFF<<0).toString(16)),3,1.2,-0.7357,25,5);
+        let balle = new Balle(600,1100,('#'+(Math.random()*0xFFFFFF<<0).toString(16)),1,1,1,25,5);
         this.#balles.push(balle);
-        this.#balles.push(balle2);
-        this.#balles.push(balle3);
-        this.#balles.push(balle4);
+       /*
+        let x = 55;
+        let y = 100;
+        for(let w = 0; w < 12; w++){
+            for (let i = 0; i <10; i++){
+                this.#briques.push( new Brique(x,y,('#'+(Math.random()*0xFFFFFF<<0).toString(16)),50,100,2));
+                x = x + 110;
+            }
+            x= 55;
+            y = y +60;
+        }*/
+        
+        
+       
+       // this.#briques.push(new Brique(100,100,('#'+(Math.random()*0xFFFFFF<<0).toString(16)),100,100,2));
+       // this.#briques.push(new Brique(200,450,('#'+(Math.random()*0xFFFFFF<<0).toString(16)),100,100,2));
+       // this.#briques.push(new Brique(600,700,('#'+(Math.random()*0xFFFFFF<<0).toString(16)),100,100,2));
         do {
             this.#ctx.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
-            //briques.forEach(brique => brique.draw(ctx,canvas,balles));
+            this.#briques.forEach(brique => brique.draw(ctx));
             this.#balles.forEach(balle => balle.draw(this.#ctx,this.#canvas,this.#balles,this.#briques,this.#raquette));
             this.#raquette.draw(this.#ctx,this.#canvas);
             //fonction netoyage qui suprime les briques detruites et les balles perdu des listes
@@ -101,7 +112,36 @@ class Niveau {
      * Fonction généran procéduralement une liste de briques
      */
     generationNiveau(){
-        //TODO coder la methode
+        let yDebut = 100;
+        let xDebut = 55;
+        let matrice = new Array(12);
+        //declaration de la matrice
+        for (let i = 0; i < matrice.length ; i++){
+            matrice[i] = new Array(10);
+        }
+        //generation de la matrice
+        for (let i = 0; i < matrice.length ; i++){
+            for (let compteur = 0; compteur < (matrice[i].length /2); compteur ++){
+                if (Math.random()>0.45){
+                    matrice[i][compteur] = getRandomInt(this.#difficulte * 3);
+                    matrice[i][matrice[i].length-1 - compteur ] =matrice[i][compteur];
+                }else{
+                    matrice[i][compteur] = 0;
+                    matrice[i][matrice[i].length-1 - compteur] = 0;
+                }
+            }
+        }
+        //interpretation de la matrice
+        for (let i = 0; i < matrice.length ; i++){
+            for (let compteur = 0; compteur < matrice[i].length ; compteur ++){
+                this.#briques.push( new Brique(xDebut,yDebut,('#'+(Math.random()*0xFFFFFF<<0).toString(16)),50,100,matrice[i][compteur]));
+                xDebut = xDebut + 110;
+            }
+            xDebut= 55;
+            yDebut = yDebut +60;
+            
+        }
+
     }
 
     /**
@@ -126,7 +166,7 @@ class Niveau {
         //netoyage des briques
         i = 0;
         while(i <this.#briques.length){
-            if (1==0){
+            if (this.#briques[i].vie <= 0){
                 elementSupr = this.#briques.splice(i,1);
             }else{
                 i++;
@@ -139,12 +179,12 @@ class Niveau {
      * gagné, si par contre il n'y a plus de balles alors le niveau est perdu
      */
     updateEtat(){
-        /*//on regarde si il n'y a plus de brique
+        //on regarde si il n'y a plus de brique
         if (this.#briques.length == 0){
             this.#etat = 1;
             console.log("gg tu as gagné");
         }
-        */
+        
         
         //on regarde si il n'y a plus de balle
         if (this.#balles.length == 0){

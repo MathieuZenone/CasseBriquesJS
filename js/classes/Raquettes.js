@@ -188,7 +188,7 @@ class raquette extends ObjetAmovible {
      */
     ecouteSouris(){
         if (this.#sourisActive){
-            this.positionX = this.#positionXSouris - this.#longueur/2;
+            this.positionX = (this.#positionXSouris - this.#longueur/2) * 3;
         }
     }
 
