@@ -59,11 +59,13 @@ class Brique extends Objet{
     draw(ctx){
         let epaisseurBordure = 10;
         ctx.beginPath();
+        //ctx.fillStyle = this.couleur;
+        //couleur par rapport au niveau de la brique
+        ctx.fillStyle = '#'+((this.#vie)*10000+0x4CB790<<0).toString(16);
         ctx.fillRect(this.positionX, this.positionY, this.#largeur, this.#hauteur);
         ctx.clearRect(this.positionX+epaisseurBordure, this.positionY+epaisseurBordure, this.#largeur-epaisseurBordure*2, this.#hauteur-epaisseurBordure*2);
         ctx.font = '20px serif';
         ctx.fillText(this.#vie, this.positionX + 2*epaisseurBordure + 20, this.positionY+this.#hauteur/2 + 5);
-        ctx.fillStyle = this.couleur;
         ctx.fill();
         ctx.closePath();
     }

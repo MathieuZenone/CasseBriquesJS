@@ -19,6 +19,8 @@ class Balle extends ObjetAmovible {
      */
     #affectColisionRaquette;
 
+    #enColisionBrique;
+ 
     /* 
      * Constructeur initialisant une balle en definissant son rayon et sa puissance
      */
@@ -28,6 +30,8 @@ class Balle extends ObjetAmovible {
         this.#puissance = puissance;
         this.#enVie = true;
         this.#affectColisionRaquette = true;
+        this.#enColisionBrique = false;
+
     }
 
     get rayon(){
@@ -55,16 +59,18 @@ class Balle extends ObjetAmovible {
     }
 
     draw(ctx,canvas,balles,briques,raquette){
+        let gainScore = 0;
         ctx.beginPath();
 
         ctx.arc(this.positionX, this.positionY, this.#rayon, 0, Math.PI*2, false);
         //ctx.fillStyle = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
         ctx.fillStyle = this.couleur;
+        
         ctx.fill();
         ctx.closePath();
         super.nouvelPosition();
         this.colisionBordure(canvas);
-        this.colisionBriques(briques);
+        gainScore += this.colisionBriques(briques);
         this.rebondRaquette(raquette);
         this.etatBalle(canvas);
         /*colision balles colision avec les balle desactivé 
@@ -83,6 +89,7 @@ class Balle extends ObjetAmovible {
                 }
             }
         }*/
+        return gainScore;
 
     }
 
@@ -123,8 +130,11 @@ class Balle extends ObjetAmovible {
     etatBalle(canvas){
         if (this.positionY >= canvas.height + this.#rayon){
             this.#enVie = false;
-            console.log(this.#enVie);
         }
+
+        this.#enColisionBrique = false;
+        
+       
     }
 
 
@@ -216,76 +226,143 @@ class Balle extends ObjetAmovible {
      * Methode gérant les rebond sur les briques  
      */
      colisionBriques(briques){
-         //on parcours toute les briques 
-         briques.forEach(brique => this.rebondBrique(brique));
-
+        //on parcours toute les briques 
+        let superGain = 0;
+        briques.forEach(brique => superGain+=this.rebondBrique(brique));
+        return superGain;
     }
 
     /**
      * Methode gérant les rebonds sur les briques
      */
     rebondBrique(brique){
-        let ax,ay,bx,by,cx,cy;
-        let yDirection =0;
-        let xDirection = 0;
- 
-        //colision dessus
+        let ax,ay,bx,by,cx,cy,dx,dy;
+        let gainScore = 0;
+        
         ax = brique.positionX;
-        bx = brique.positionX + brique.largeur;
-        cx = brique.positionX + brique.largeur/2;
         ay = brique.positionY;
-        by = brique.positionY;
-        cy = brique.positionY + brique.hauteur/2;
-        if (inTriangle(ax,ay,bx,by,cx,cy,this.positionX ,this.positionY + this.#rayon )){
-            //this.vitesse = this.vitesse*-1;
-            this.directionY = this.directionY * -1;
 
-            this.#affectColisionRaquette = true;
-            brique.retrancherVie(this.#puissance);
-        }
+        bx = brique.positionX + brique.largeur;
+        by = brique.positionY;
+
+        cx = brique.positionX + brique.largeur
+        cy = brique.positionY + brique.hauteur;
+
+        dx = brique.positionX;
+        dy = brique.positionY + brique.hauteur;
+
+
+
+
 
         //colision droite
-        ax = brique.positionX + brique.largeur;
-        bx = brique.positionX + brique.largeur;
-        cx = brique.positionX + brique.largeur/2;
-        ay = brique.positionY;
-        by = brique.positionY + brique.hauteur;
-        cy = brique.positionY + brique.hauteur/2;
-        if (inTriangle(ax,ay,bx,by,cx,cy,this.positionX - this.#rayon,this.positionY )){
-            //this.vitesse = this.vitesse*-1;
-            this.directionX = this.directionX * -1 ;
-            this.#affectColisionRaquette = true;
-            brique.retrancherVie(this.#puissance);
+       /* console.log("===========DEBUG===========");
+        console.log("POSITION Y CERCLE : " + this.positionY);
+        console.log("POSITION X CERCLE : " + this.positionX);
+
+        console.log("POSITION BX : " + bx);
+        console.log("POSITION By : " + by);
+
+        console.log("POSITION CX : " + cx);
+        console.log("POSITION CY : " + cy);
+
+        console.log(delta(this.positionY, this.positionX, this.#rayon, bx,by,cx,cy));
+        console.log("===========================");*/
+        
+        if (delta(this.positionY, this.positionX, this.#rayon, bx, by ,cx ,cy)>=0
+            && this.positionY >= ay
+            && this.positionY <= dy 
+            ){
+            
+            
+            
+            this.directionX = this.directionX*-1;
+            
+
+            if (!this.#enColisionBrique){
+                this.#affectColisionRaquette = true;
+                gainScore += this.#puissance;
+                if (brique.vie < 0 ){
+                    gainScore += gainScore - brique.vie; 
+                }
+                brique.retrancherVie(this.#puissance);
+                this.#enColisionBrique = true;
+            }
         }
 
-        //colision basse
-        ax = brique.positionX + brique.largeur;
-        bx = brique.positionX;
-        cx = brique.positionX + brique.largeur/2;
-        ay = brique.positionY + brique.hauteur;
-        by = brique.positionY + brique.hauteur;
-        cy = brique.positionY + brique.hauteur/2;
-        if (inTriangle(ax,ay,bx,by,cx,cy,this.positionX,this.positionY - this.#rayon)){
-            //this.vitesse = this.vitesse*-1;
-            this.directionY = this.directionY * -1;
-            this.#affectColisionRaquette = true;
-            brique.retrancherVie(this.#puissance);
-        }
+
 
         //colision gauche
-        ax = brique.positionX;
-        bx = brique.positionX;
-        cx = brique.positionX + brique.largeur/2;
-        ay = brique.positionY + brique.hauteur;
-        by = brique.positionY;
-        cy = brique.positionY + brique.hauteur/2;
-        if (inTriangle(ax,ay,bx,by,cx,cy,this.positionX + this.#rayon,this.positionY)){
-            //this.vitesse = this.vitesse*-1;
-            this.directionX = this.directionX * -1 ;
-            this.#affectColisionRaquette = true;
-            brique.retrancherVie(this.#puissance);
+        if (delta(this.positionY, this.positionX, this.#rayon, ax, ay ,dx ,dy)>=0
+            && this.positionY >= ay 
+            && this.positionY <= dy 
+            ){
+               
+            
+            this.directionX = this.directionX *-1;
+            
+            if (!this.#enColisionBrique){
+                this.#affectColisionRaquette = true;
+                gainScore += this.#puissance;
+                if (brique.vie < 0 ){
+                    gainScore += gainScore - brique.vie; 
+                }
+                brique.retrancherVie(this.#puissance);
+                this.#enColisionBrique = true;
+            }
         }
 
+        //colision dessus
+        if (delta(this.positionY, this.positionX, this.#rayon, ax, ay ,bx ,by)>=0
+            && this.positionX >= ax 
+            && this.positionX <= bx 
+            ){
+                
+            
+            this.directionY = this.directionY  *-1;
+            
+
+            if (!this.#enColisionBrique){
+                
+                this.#affectColisionRaquette = true;
+                gainScore += this.#puissance;
+                if (brique.vie < 0 ){
+                    gainScore += gainScore - brique.vie; 
+                }
+                brique.retrancherVie(this.#puissance);
+                this.#enColisionBrique = true;
+            }
+        }
+
+
+        //colision basse
+        if (delta(this.positionY, this.positionX, this.#rayon, dx,dy,cx,cy)>=0
+            && this.positionX >= ax 
+            && this.positionX <= bx 
+            ){
+                 
+                //this.vitesse = this.vitesse*-1;
+            
+            this.directionY = this.directionY *-1;
+            
+            
+            if (!this.#enColisionBrique){
+                this.#affectColisionRaquette = true;
+                gainScore += this.#puissance;
+                if (brique.vie < 0 ){
+                    gainScore += gainScore - brique.vie; 
+                }
+                brique.retrancherVie(this.#puissance);
+                this.#enColisionBrique = true;
+            }
+            
+        }
+        
+     
+
+
+
+        return gainScore;
 
     }
 

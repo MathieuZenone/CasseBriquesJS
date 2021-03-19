@@ -32,6 +32,15 @@ class Niveau {
     /*balles du niveau */
     #balles;
 
+    /*Score */
+    #zoneTextScore;
+
+    #vie;
+
+    #zoneTextVie;
+
+    #ListBonus;
+
 
     /**
      * Constructeur innitialisant un niveau avec un canvas son contenus
@@ -40,29 +49,60 @@ class Niveau {
      * @param {*} ctx 
      * @param {Integer} dificulte 
      */
-    constructor(canvas,ctx,difficulte){
+    constructor(canvas,ctx,difficulte,score,vie){
+        
         let longueurRaquette = 100;
         let hauteurRaquette = 15;
         let postionXRaquette = (canvas.width-longueurRaquette)/2;
-        let postionYRaquette = (canvas.height - hauteurRaquette - 20);
+        let postionYRaquette = (canvas.height - hauteurRaquette - 60);
         let couleurRaquette = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
         
         this.#canvas = canvas;
         this.#ctx = ctx;
         this.#difficulte = difficulte;
-        this.#score = 0;
+        
+        this.#score = score;
+        this.#vie = vie;
+
         this.#etat = 0;
+        this.#zoneTextScore = new Msg(15,canvas.height-10,"#2AE5EE");
+
+        this.#zoneTextVie = new Msg(canvas.width - 150,canvas.height-10,"#2AE5EE");
 
         this.#briques = new Array();
         this.#balles = new Array();
+        this.#ListBonus = new Array();
         this.#raquette = 
             new raquette(postionXRaquette,postionYRaquette,couleurRaquette,7,0,0,hauteurRaquette,longueurRaquette,this.#canvas);
+
+        const instanceObjet = this;
+        document.addEventListener("keydown",function(touche){instanceObjet.ecouteApuieTouche(touche);}, false);
 
     }
 
 
     get etat(){
         return this.#etat;
+    }
+
+    get score(){
+        return this.#score;
+    }
+
+    get vie(){
+        return this.#vie;
+    }
+
+    set vie(nouvelleVie){
+        this.#vie = nouvelleVie;
+    }
+
+    get ctx(){
+        return this.#ctx;
+    }
+
+    get raquette(){
+        return this.#raquette;
     }
 
     
@@ -73,43 +113,47 @@ class Niveau {
      * soit finis(par une réussite ou un échec)
      */
     async start(){
+        
         this.generationNiveau();
-        let balle = new Balle(600,1100,('#'+(Math.random()*0xFFFFFF<<0).toString(16)),1,1,1,25,5);
-        this.#balles.push(balle);
-       /*
-        let x = 55;
-        let y = 100;
-        for(let w = 0; w < 12; w++){
-            for (let i = 0; i <10; i++){
-                this.#briques.push( new Brique(x,y,('#'+(Math.random()*0xFFFFFF<<0).toString(16)),50,100,2));
-                x = x + 110;
-            }
-            x= 55;
-            y = y +60;
-        }*/
+        this.nouvelleBalle();
+
         
-        
-       
-       // this.#briques.push(new Brique(100,100,('#'+(Math.random()*0xFFFFFF<<0).toString(16)),100,100,2));
-       // this.#briques.push(new Brique(200,450,('#'+(Math.random()*0xFFFFFF<<0).toString(16)),100,100,2));
-       // this.#briques.push(new Brique(600,700,('#'+(Math.random()*0xFFFFFF<<0).toString(16)),100,100,2));
+
+
         do {
+            this.#balles.forEach(balle => this.attenteBalle(balle));
             this.#ctx.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
             this.#briques.forEach(brique => brique.draw(ctx));
-            this.#balles.forEach(balle => balle.draw(this.#ctx,this.#canvas,this.#balles,this.#briques,this.#raquette));
+            this.#balles.forEach(balle => this.#score += balle.draw(this.#ctx,this.#canvas,this.#balles,this.#briques,this.#raquette));
             this.#raquette.draw(this.#ctx,this.#canvas);
+            this.#ListBonus.forEach(bonus => bonus.draw());
             //fonction netoyage qui suprime les briques detruites et les balles perdu des listes
             this.netoyage();
+            if (this.#vie > 0 && this.#balles.length == 0){
+                this.#raquette.positionX = (this.#canvas.width- this.#raquette.longueur)/2;
+                this.#raquette.positionY = this.#canvas.height - this.#raquette.hauteur - 60;
+                this.nouvelleBalle();
+            }
             //fonction rafraichissant l'etat en cours de la partie 
+            
             this.updateEtat();
+            
+            
             //temps attente entre chaque frame
+            //console.log(this.#score);
+            this.#zoneTextScore.draw(this.#ctx,`Score : ${this.#score}`);
+            this.#zoneTextVie.draw(this.#ctx,`Vie : ${this.#vie}`);
+            
             await sleep(1);
+
+            
+
         }while(this.#etat == 0);
 
     }
 
-    /**
-     * Fonction généran procéduralement une liste de briques
+    /**+
+     * 
      */
     generationNiveau(){
         let yDebut = 100;
@@ -134,7 +178,9 @@ class Niveau {
         //interpretation de la matrice
         for (let i = 0; i < matrice.length ; i++){
             for (let compteur = 0; compteur < matrice[i].length ; compteur ++){
-                this.#briques.push( new Brique(xDebut,yDebut,('#'+(Math.random()*0xFFFFFF<<0).toString(16)),50,100,matrice[i][compteur]));
+                if (matrice[i][compteur]>0){
+                    this.#briques.push( new Brique(xDebut,yDebut,('#'+(Math.random()*0xFFFFFF<<0).toString(16)),50,100,matrice[i][compteur]));
+                }
                 xDebut = xDebut + 110;
             }
             xDebut= 55;
@@ -156,17 +202,40 @@ class Niveau {
         while(i <this.#balles.length){
             if (this.#balles[i].enVie == false){
                 elementSupr = this.#balles.splice(i,1);
-                console.log("SUPPR");
+                if ( this.#balles.length == 0){
+                    this.#vie --;
+                }
+            }else{
+                i++;
+            }
+        }
+
+        //netoyage des bonus
+        i == 0;
+        while(i <this.#ListBonus.length){
+            
+            if (this.#ListBonus[i].positionY > this.#canvas.height || this.#ListBonus[i].estUtilise){
+                
+                
+                elementSupr = this.#ListBonus.splice(i,1);
+                
             }else{
                 i++;
             }
         }
 
 
+
         //netoyage des briques
         i = 0;
         while(i <this.#briques.length){
             if (this.#briques[i].vie <= 0){
+                if (Math.random()>0.90){
+                    this.#ListBonus.push(
+                        new Bonus(this.#briques[i].positionX + this.#briques[i].largeur/2,
+                                  this.#briques[i].positionY + this.#briques[i].hauteur/2,
+                                  '#'+(Math.random()*0xFFFFFF<<0).toString(16),1,0,1,this));
+                }
                 elementSupr = this.#briques.splice(i,1);
             }else{
                 i++;
@@ -180,18 +249,53 @@ class Niveau {
      */
     updateEtat(){
         //on regarde si il n'y a plus de brique
+        
         if (this.#briques.length == 0){
             this.#etat = 1;
             console.log("gg tu as gagné");
         }
         
         
-        //on regarde si il n'y a plus de balle
-        if (this.#balles.length == 0){
+        //on regarde si le nb de vie = 0
+        if (this.#vie <= 0){
             this.#etat = 2;
             console.log("perdu tu es movais");
         }
 
 
     }
+
+    nouvelleBalle(){
+        
+        let balle = new Balle(600,1100,('#'+(Math.random()*0xFFFFFF<<0).toString(16)),0,1,1,25,1);
+        this.#balles.push(balle);        
+
+
+    }
+
+    attenteBalle(balle){
+        if (balle.vitesse == 0){
+            balle.positionX = this.#raquette.positionX + this.#raquette.longueur/2;
+        }
+    }
+
+    /**
+     * Fonction ecoutant les apuie sur touche du clavier,
+     * si la touche du clavier droit du est activé l'attribut flecheDroiteActive est
+     * mis à vrais, si la fleche gauche est activé alors l'attribut flecheGaucheActive
+     * est mis à vrais, cette fonction met à jour les attribut d'une raquette
+     */
+         ecouteApuieTouche(touche){
+           let unLancement = false;
+            if(touche.key == " " ) {
+                for(let i = 0 ; i < this.#balles.length; i++){
+                    if (this.#balles[i].vitesse == 0 && !unLancement){
+                        this.#balles[i].vitesse = 2 + this.#difficulte/2 - 1;
+                        unLancement= true;
+                    }
+                }
+            }
+            
+    
+        }
 }

@@ -32,3 +32,55 @@ function sleep(ms) {
   function inTriangle(ax,ay, bx,by, cx,cy, px,py) {
     return ((isLeft(ax,ay, bx,by, px,py) >= 0) && (isLeft(bx,by, cx,cy, px,py) >= 0) && (isLeft(cx,cy,ax,ay, px,py) >= 0)) ? true : false;
   }
+
+
+  /**
+   * Fonction renvoyant un delta sur l'eqation polynimilae de degrée 2
+   * de l'intersection entre un cercle et un segment 
+   * si le delta est inférieure à 0 il n'y a pas de point d'intersection
+   */
+  function delta(cercleY, cercleX, cercleRayon, x1 ,y1 , x2, y2){
+    let delta;
+    let A,B,C;
+    let a,b,x;
+
+    if (x1 != x2){    
+      a = coeficientDirecteur(x1 ,y1 , x2, y2);
+      b = y1 - a*x1;
+
+
+      A = 1 + (a*a);
+      B = 2 * (a * (b - cercleY) - cercleX);
+      C = (cercleX * cercleX) + ((b-cercleY)*(b-cercleY)) - (cercleRayon * cercleRayon);
+    }else{
+      a = 1;
+      b = 0;
+      x = x1;
+      C = ((x - cercleX)*(x - cercleX))+((-1*cercleY)*(-1*cercleY))- (cercleRayon * cercleRayon);
+      B = 2 * cercleY * -1;
+      A = 1;
+      
+      
+      
+      
+     
+  
+    }
+    
+    delta = B * B - 4 * A * C;
+
+    return delta;
+  }
+
+
+/**
+ * Fonction qui renvoie le a de l'equation y =ax + b
+ * à partir de 2 point
+ */
+function coeficientDirecteur(x1 ,y1 , x2, y2){
+  let a;
+  
+  a = (y2 - y1)/(x2 - x1);
+  
+  return a;
+}

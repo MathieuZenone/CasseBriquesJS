@@ -61,6 +61,10 @@ class raquette extends ObjetAmovible {
     get hauteur(){
         return this.#hauteur;
     }
+
+    set longueur(nouvelleLongueur){
+        this.#longueur = nouvelleLongueur;
+    }
     /**
      * Methode dessinant une raquette, une raquette et la superposition d'un rectangle 
      * et de 2 cercle placée aux extrimité de la raquette de fàçon à avoir des bout arrondit
@@ -69,22 +73,25 @@ class raquette extends ObjetAmovible {
        
         //Dessin du rectange
         ctx.beginPath();
-        ctx.rect(this.positionX, this.positionY, this.#longueur, this.#hauteur);
         ctx.fillStyle = this.couleur;
+        ctx.rect(this.positionX, this.positionY, this.#longueur, this.#hauteur);
+        
         ctx.fill();
         ctx.closePath();
 
         //dessin du cercle gauche
         ctx.beginPath();
-        ctx.arc(this.positionX , this.positionY+ (this.#hauteur/2), this.#hauteur/2, 0, Math.PI*2, false);
         ctx.fillStyle = this.couleur;
+        ctx.arc(this.positionX , this.positionY+ (this.#hauteur/2), this.#hauteur/2, 0, Math.PI*2, false);
+        
         ctx.fill();
         ctx.closePath();
 
         //dessin du cercle droit
         ctx.beginPath();
-        ctx.arc(this.positionX +this.#longueur , this.positionY+ (this.#hauteur/2), this.#hauteur/2, 0, Math.PI*2, false);
         ctx.fillStyle = this.couleur;
+        ctx.arc(this.positionX +this.#longueur , this.positionY+ (this.#hauteur/2), this.#hauteur/2, 0, Math.PI*2, false);
+        
         ctx.fill();
         ctx.closePath();
 
@@ -163,7 +170,7 @@ class raquette extends ObjetAmovible {
      */
     ecouteClicSouris(){
         this.#sourisActive = true;
-        console.log(this.#positionXSouris);
+       
     }
 
     /**
@@ -184,7 +191,7 @@ class raquette extends ObjetAmovible {
 
     /**
      * Methode plaçant la raquette sur l'axe x de la souris si c'elle si se trouve dans le canvas et que son
-     * clic soit activé
+     * clic est activé
      */
     ecouteSouris(){
         if (this.#sourisActive){

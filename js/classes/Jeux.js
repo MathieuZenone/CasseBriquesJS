@@ -17,12 +17,12 @@ class Jeux {
     /* gameOver etat du jeu en cours */
     #gameOver;
 
-    /* score du jeu en cours */
-    #score;
-
     /* Niveau du jeu en cours */
     #niveau;
 
+    #scoreTotal
+
+    #vieTotal
     /**
      * Contructeur qui instancie un nouveau Jeu avec un GameOver à false
      * un score à 0 et qui prend en parametres le canvas ainsi que son
@@ -34,7 +34,8 @@ class Jeux {
         this.#canvas = canvas;
         this.#ctx = ctx;
         this.#gameOver = false;
-        this.#score = 0;
+        this.#scoreTotal = 0;
+        this.#vieTotal = 3;
     }
 
     /**
@@ -45,11 +46,14 @@ class Jeux {
      * continue.
      */
     async jouer(){
-        let difficulte = 0;
+        let difficulte = 1;
+        
+        
         do {
-            this.#niveau = new Niveau(this.#canvas,this.#ctx,difficulte);
+            this.#niveau = new Niveau(this.#canvas,this.#ctx,difficulte,  this.#scoreTotal,this.#vieTotal);
             await this.#niveau.start();
-            this.#score += this.#niveau.score;
+            this.#scoreTotal += this.#niveau.score;
+            this.#vieTotal = this.#niveau.vie;
             // si le niveau est gagné
             if (this.#niveau.etat == 1){
                 difficulte += getRandomInt(3);
