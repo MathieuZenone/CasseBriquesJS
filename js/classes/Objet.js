@@ -13,9 +13,13 @@ class Objet {
     /* Couleur de l'objet */
     #couleur;
     
-    /* 
+    
+    /**
      * Constructeur de la classe Objet, instancie un objet 
-     * avec une positionX ,une positionY et une couleur
+     * avec une positionX ,une positionY et une couleur 
+     * @param {numeric} positionX position x de l'objet
+     * @param {numeric} positionY position y de l'objet
+     * @param {numeric} couleur couleur de l'objet
      */
     constructor (positionX,positionY,couleur){
         this.#positionX = positionX;

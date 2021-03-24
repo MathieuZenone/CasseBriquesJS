@@ -1,12 +1,16 @@
 
-
+/**
+ * Classe msg sert à afficher un texte dans une zone de dessin,
+ * cette classe est un extend d'objet
+ */
 class Msg extends Objet{
-    /* Hauteur de la Brique */
-    
+ 
 
     /**
      * Constructeur initialisant uen brique avec une largeur
-     * une hauteur et un nombre de vie 
+     * @param {numeric} positionX position x de l'objet
+     * @param {numeric} positionY position y de l'objet
+     * @param {numeric} couleur couleur de l'objet
      */
     constructor(positionX,positionY,couleur){
         super(positionX,positionY,couleur);
@@ -16,6 +20,7 @@ class Msg extends Objet{
     /**
      * fonction dessinant une brique
      * @param {*} ctx 
+     * @param {*} message message à afficher
      */
     draw(ctx,message){
         ctx.beginPath();

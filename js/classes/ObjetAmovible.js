@@ -15,9 +15,15 @@ class ObjetAmovible extends Objet{
     /* Direction Y de l'ObjetAmovible */
     #directionY;
 
-    /* 
+    /**
      * Constructeur initialisant un ObjetAmovible avec une vitesse
      * Une directionX et une directionY
+     * @param {numeric} positionX position x de l'objet
+     * @param {numeric} positionY position y de l'objet
+     * @param {numeric} couleur couleur de l'objet
+     * @param {Integer} vitesse vitesse de l'objet
+     * @param {numeric} directionX coordonnée x du vecteur de direction de l'objet
+     * @param {numeric} directionY coordonnée y du vecteur de direction de l'objet
      */
     constructor(positionX,positionY,couleur,vitesse,directionX,directionY){
         super(positionX,positionY,couleur);
@@ -51,11 +57,12 @@ class ObjetAmovible extends Objet{
         this.#directionY = directionY;
     }
 
-
+    /**
+     * Calcule la nouvelle position d'un objet grace à sa vitesse
+     * et son vecteur de direction
+     */
     nouvelPosition(){
-      
         this.positionX += this.#directionX  * this.#vitesse ;
         this.positionY += this.#directionY  * this.#vitesse ;
-
     }
 }

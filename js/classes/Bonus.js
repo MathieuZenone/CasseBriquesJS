@@ -1,10 +1,23 @@
-
+/**
+ * Classe Bonus, cette classe sert à créer des bonus un bonus et un ObjetAmovible avec 
+ * un niveau dans lequel il prend place et une variable booleanne pour savoir si il a été utilisé
+ */
 class Bonus extends ObjetAmovible {
-
+    /* le niveau est l'endroit ou prend place le bonus */
     #niveau
-
+    /* Boolean qui indique si le bonus a été utilisé */
     #estUtilise
 
+    /**
+     * Instancie un bonus depuis une certaine position
+     * @param {numeric} positionX position x de l'objet
+     * @param {numeric} positionY position y de l'objet
+     * @param {numeric} couleur couleur de l'objet
+     * @param {Integer} vitesse vitesse de l'objet
+     * @param {numeric} directionX coordonnée x du vecteur de direction de l'objet
+     * @param {numeric} directionY coordonnée y du vecteur de direction de l'objet
+     * @param {*} niveau niveau dans lequel se place le bonus
+     */
     constructor(positionX,positionY,couleur,vitesse,directionX,directionY,niveau){
         super(positionX,positionY,couleur,vitesse,directionX,directionY);
         this.#niveau = niveau;
@@ -15,14 +28,16 @@ class Bonus extends ObjetAmovible {
     get estUtilise(){
         return this.#estUtilise;
     }
-
+    /**
+     * Fonction dessinant le bonus
+     */
     draw(){
         if (!this.#estUtilise){
             let longueur = 20;
             let largeur = 20;
             this.#niveau.ctx.beginPath();
             ctx.fillStyle = this.couleur;
-            this.#niveau.ctx.fillRect(this.positionX, this.positionY,longueur,largeur);
+            this.#niveau.ctx.fillRect(this.positionX, this.positionY,longueur,largeur); //dessine un carée
             this.#niveau.ctx.fill();
             this.#niveau.ctx.closePath();
             super.nouvelPosition();
@@ -30,6 +45,9 @@ class Bonus extends ObjetAmovible {
         }
     }
 
+    /**
+     * on regarde si le bonus rentre en colision avec la raquète
+     */
     detectionColision(){
         if (this.positionY >= this.#niveau.raquette.positionY 
             && this.positionY<= this.#niveau.raquette.positionY+ this.#niveau.raquette.hauteur
@@ -40,6 +58,9 @@ class Bonus extends ObjetAmovible {
         }
     }
 
+    /**
+     * Definition des avantage liés à la récupération du bonus au bonus
+     */
     bonusAlea(){
         let alea = Math.random();
         //nouvelle vie

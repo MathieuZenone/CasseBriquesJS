@@ -26,9 +26,19 @@ class raquette extends ObjetAmovible {
 
     /* positionX de la sourris */
     #positionXSouris;
+    
     /**
      * Constructeur de la raquette creeant une raquette avec une hauteur et une
      * longueur.
+     * @param {numeric} positionX position x de l'objet
+     * @param {numeric} positionY position y de l'objet
+     * @param {numeric} couleur couleur de l'objet
+     * @param {Integer} vitesse vitesse de l'objet
+     * @param {numeric} directionX coordonnée x du vecteur de direction de l'objet
+     * @param {numeric} directionY coordonnée y du vecteur de direction de l'objet
+     * @param {Integer} hauteur hauteur de la raquette
+     * @param {Integer} longueur longueur de la raquette
+     * @param {canvas} canvas canvas dans lequel se trouve la raquette
      */
     constructor(positionX,positionY,couleur,vitesse,directionX,directionY,hauteur,longueur,canvas){
         super(positionX,positionY,couleur,vitesse,directionX,directionY);
@@ -52,19 +62,7 @@ class raquette extends ObjetAmovible {
         
     }
 
-    /* renvoie la longueur de la raquette */
-    get longueur(){
-        return this.#longueur;
-    }
 
-    /* renvoie la hauteur de la raquette */
-    get hauteur(){
-        return this.#hauteur;
-    }
-
-    set longueur(nouvelleLongueur){
-        this.#longueur = nouvelleLongueur;
-    }
     /**
      * Methode dessinant une raquette, une raquette et la superposition d'un rectangle 
      * et de 2 cercle placée aux extrimité de la raquette de fàçon à avoir des bout arrondit
@@ -95,11 +93,13 @@ class raquette extends ObjetAmovible {
         ctx.fill();
         ctx.closePath();
 
-
-        
+        // on calcule la nouvelle position
         super.nouvelPosition();
+        //on ecoute le clavier
         this.ecouteClavier();
+        //on ecoute la souris
         this.ecouteSouris();
+        //on regarde qu'on ne depasse pas les bord du canvas
         this.limitationBordure();
         
     }
@@ -125,10 +125,11 @@ class raquette extends ObjetAmovible {
      * est mis à vrais, cette fonction met à jour les attribut d'une raquette
      */
     ecouteApuieTouche(touche){
-        
+        //on ecoute l'apuie de la touche fleche droite
         if(touche.key == "Right" || touche.key == "ArrowRight") {
             this.#flecheDroiteActive = true;
         }
+        //on ecoute l'apuie de touche fleche gauche
         else if(touche.key == "Left" || touche.key == "ArrowLeft") {
             this.#flecheGaucheActive = true;
         }
@@ -141,9 +142,11 @@ class raquette extends ObjetAmovible {
      * si la touche gauche est relaché son attribut est mis à false, cette fonction met à jour les attribut d'une raquette
      */
     ecouteRelachementTouche(touche){
+        //on ecoute le relachement de la touche fleche droite
         if(touche.key == "Right" || touche.key == "ArrowRight") {
             this.#flecheDroiteActive = false;
         }
+        //on ecoute le relachement de la touche fleche gauche
         else if(touche.key == "Left" || touche.key == "ArrowLeft") {
             this.#flecheGaucheActive = false;
         }
@@ -155,12 +158,13 @@ class raquette extends ObjetAmovible {
      * methode indiquant si la raquette doit se deplacer ou non
      */
     ecouteClavier(){
+        //on regarde si le deplacement droit est activé
         if (this.#flecheDroiteActive && !this.#flecheGaucheActive){
-            this.directionX = 1;
+            this.directionX = 1; // on met la valeur x du vecteur de position à 1 (deplacement droit)
         }else if(!this.#flecheDroiteActive && this.#flecheGaucheActive){
-            this.directionX = -1;
+            this.directionX = -1; // on met la valeur x du vecteur de position à -1 (deplacement gauche)
         }else{
-            this.directionX = 0;
+            this.directionX = 0;// on met la valeur x du vecteur de position à -1 (ne bouge pas)
         }
     }
 
@@ -195,8 +199,20 @@ class raquette extends ObjetAmovible {
      */
     ecouteSouris(){
         if (this.#sourisActive){
-            this.positionX = (this.#positionXSouris - this.#longueur/2) * 3;
+            this.positionX = (this.#positionXSouris - this.#longueur/2) * 3; // position de la souris non exacte à revoir
         }
+    }
+
+    get longueur(){
+        return this.#longueur;
+    }
+
+    get hauteur(){
+        return this.#hauteur;
+    }
+
+    set longueur(nouvelleLongueur){
+        this.#longueur = nouvelleLongueur;
     }
 
  
