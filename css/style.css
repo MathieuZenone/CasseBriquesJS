@@ -1,23 +1,105 @@
-/* change l'affichage de la navbar en scrollant */
-.navbar.active {
-    background: #fff;
-    box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.1);
+
+/* BASE */
+html {
+    scroll-behavior: smooth;
 }
 
-/* utilisé pour décaler des éléments */
-.navbar{
-   padding-left: 5%; 
-   padding-right: 5%; 
+body {
+    background-color: whitesmoke !important;
+}
+
+a:link,
+a:visited,
+a:focus,
+a:hover,
+a:active {
+    text-decoration: none;
+    color: white;
+}
+
+
+section {
+    height: 100vh;
+    width: 100%;
+}
+
+.desc-container {
+    width: 90%;
+    max-height: 50%;
+    margin: 0 auto;
+    margin-top: 2.5%;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid rgba(0,0,0,0.4);
+    box-shadow: 7px 5px 5px rgba(0,0,0,0.4);
+    padding: 15px 15px;
+
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.desc-presentation {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+}
+.desc-presentation > * {
+    width: 50%;
+    padding: 5px 5px;
+}
+.desc-presentation > * h1, .desc-maison h1 {
+    text-transform: uppercase;
+    font-weight: 700;
+}
+.desc-presentation > * p {
+    font-weight: normal;
+}
+.desc-presentation > * p strong {
+    font-weight: 600;
+}
+
+.presentation {
+    height: 50%;
+    position: relative;
+    top: 50%;
+    transform: translateY(75%);
+}
+
+.desc-maison {
+    width: 100%;
+}
+.play {
+    margin: 15px;
+    text-align: center;
+}
+.btn-play {
+    background-color: #2ecc71;
+    opacity: 0.8;
+    border-radius: 5px;
+    padding: 15px 25px;
+    margin: 0 auto;
+    font-weight: 700;
+    transition: opacity 0.3s;
+}
+
+.btn-play:hover {
+    text-decoration: none;
+    color: white;
+    opacity: 1;
 }
 
 #zoneDessin{
-    border: 1px solid black;
+    border-radius: 5px;
+    border: 1px solid rgba(0,0,0,0.4);
+    box-shadow: 7px 5px 5px rgba(0,0,0,0.4);
     
-    width:50vw;
-    height:75vh;
+    width:80%;
+    height:90vh;
     display: flex;
     margin:0 auto;
     margin-top: 100px;
     margin-bottom: 50px;
     
+    background-color: white;
 }

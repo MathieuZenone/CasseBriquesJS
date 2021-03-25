@@ -67,7 +67,7 @@ class Raquette extends ObjetAmovible {
         document.addEventListener("keyup",   touche => instanceObjet.lorsqueToucheRelache(touche), false);
 
         // On ajoute des écoutes sur les actions de la souris
-        document.addEventListener("mousemove", () => instanceObjet.lorsqueSourisDeplacement(), false);
+        document.addEventListener("mousemove", e => instanceObjet.lorsqueSourisDeplacement(e), false);
         document.addEventListener("mousedown", () => instanceObjet.lorsqueSourisClique(), false);
         document.addEventListener("mouseup",   () => instanceObjet.lorsequeSourisRelache(), false);
     }
@@ -193,7 +193,7 @@ class Raquette extends ObjetAmovible {
     /**
      * Fonction s'activant sur le déplacement de la sourris indique sa postion X 
      */
-     lorsqueSourisDeplacement() {
+     lorsqueSourisDeplacement(e) {
         let rect = canvas.getBoundingClientRect();
         this.#positionXSouris = e.clientX - rect.left;
     }
