@@ -1,40 +1,39 @@
 /*
- * Classe Objet, un objet est définit par des coordonnées dans un plan orthonormé (x,y) 
- * et par une couleur, un objet ne peux pas se deplacer  
+ * Classe Objet.
+ * Un objet dans le cas du casse brique est défini par des coordonnées dans un plan orthonormé (x,y) 
+ * et par une couleur. Par défaut il ne peut pas se déplacer.
  */
 class Objet {
     
-    /* postion X de l'objet */
-    #positionX;
+    /* position X de l'objet */
+    #xPos;
     
-    /* postion Y de l'objet */
-    #positionY;
+    /* position Y de l'objet */
+    #yPos;
     
     /* Couleur de l'objet */
     #couleur;
     
-    
     /**
-     * Constructeur de la classe Objet, instancie un objet 
-     * avec une positionX ,une positionY et une couleur 
-     * @param {numeric} positionX position x de l'objet
-     * @param {numeric} positionY position y de l'objet
+     * État inital d'un objet dans le jeu du casse brique
+     * 
+     * @param {numeric} xPos position x de l'objet
+     * @param {numeric} yPos position y de l'objet
      * @param {numeric} couleur couleur de l'objet
      */
-    constructor (positionX,positionY,couleur){
-        this.#positionX = positionX;
-        this.#positionY = positionY;
+    constructor (xPos, yPos, couleur){
+        this.#xPos = xPos;
+        this.#yPos = yPos;
         this.#couleur = couleur;
     }
 
-
-
+    // Getters & Setters
     get positionX(){
-        return this.#positionX;
+        return this.#xPos;
     }
 
     get positionY(){
-        return this.#positionY;
+        return this.#yPos;
     }
 
     get couleur(){
@@ -42,11 +41,11 @@ class Objet {
     }
 
     set positionX(x){
-        this.#positionX = x;
+        this.#xPos = x;
     }
 
     set positionY(y){
-        this.#positionY = y;
+        this.#yPos = y;
     }
 
     set couleur(couleur){
