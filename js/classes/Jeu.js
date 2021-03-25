@@ -48,7 +48,6 @@ class Jeu {
     async jouer(){
         let difficulte = 1;
         
-        
         do {
             this.#niveau = new Niveau(this.#canvas,this.#ctx,difficulte,  this.#scoreTotal,this.#vieTotal);
             await this.#niveau.start();

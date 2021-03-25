@@ -105,8 +105,6 @@ class Niveau {
         return this.#raquette;
     }
 
-    
-
     /**
      * methode start démarant le jeux sur le niveau. La fonction commence par
      * générer une liste de briques puis elle va déssiner la partie jusqu'à qu'elle
@@ -117,14 +115,11 @@ class Niveau {
         this.generationNiveau();
         this.nouvelleBalle();
 
-        
-
-
         do {
             this.#balles.forEach(balle => this.attenteBalle(balle));
             this.#ctx.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
             this.#briques.forEach(brique => brique.draw(ctx));
-            this.#balles.forEach(balle => this.#score += balle.draw(this.#ctx,this.#canvas,this.#balles,this.#briques,this.#raquette));
+            this.#balles.forEach(balle => this.#score += balle.draw(this.#ctx,this.#canvas,this.#briques,this.#raquette));
             this.#raquette.draw(this.#ctx,this.#canvas);
             this.#ListBonus.forEach(bonus => bonus.draw());
             //fonction netoyage qui suprime les briques detruites et les balles perdu des listes
