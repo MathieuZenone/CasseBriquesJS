@@ -220,6 +220,4 @@ class Raquette extends ObjetAmovible {
         this.#longueur = nouvelleLongueur;
     }
 
- 
-
 }

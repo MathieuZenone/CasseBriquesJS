@@ -1,43 +1,46 @@
 /**
- * Classe Bonus, cette classe sert à créer des bonus un bonus et un ObjetAmovible avec 
- * un niveau dans lequel il prend place et une variable booleanne pour savoir si il a été utilisé
+ * Classe Bonus.
+ * Un bonus est un ObjetAmovible avec un niveau dans lequel il prend place 
+ * et une variable bool pour savoir s'il a été utilisé
  */
 class Bonus extends ObjetAmovible {
-    /* le niveau est l'endroit ou prend place le bonus */
+
+    /* le niveau est l'endroit où prend place le bonus */
     #niveau
     /* Boolean qui indique si le bonus a été utilisé */
     #estUtilise
 
     /**
      * Instancie un bonus depuis une certaine position
-     * @param {numeric} positionX position x de l'objet
-     * @param {numeric} positionY position y de l'objet
+     * @param {numeric} xPos position x de l'objet
+     * @param {numeric} yPos position y de l'objet
      * @param {numeric} couleur couleur de l'objet
      * @param {Integer} vitesse vitesse de l'objet
-     * @param {numeric} directionX coordonnée x du vecteur de direction de l'objet
-     * @param {numeric} directionY coordonnée y du vecteur de direction de l'objet
+     * @param {numeric} xDir coordonnée x du vecteur de direction de l'objet
+     * @param {numeric} yDir coordonnée y du vecteur de direction de l'objet
      * @param {*} niveau niveau dans lequel se place le bonus
      */
-    constructor(positionX,positionY,couleur,vitesse,directionX,directionY,niveau){
-        super(positionX,positionY,couleur,vitesse,directionX,directionY);
+    constructor(xPos, yPos, couleur,vitesse, xDir, yDir, niveau) {
+        super(xPos, yPos, couleur, vitesse, xDir, yDir);
         this.#niveau = niveau;
         this.#estUtilise = false;
 
     }
 
-    get estUtilise(){
+    get estUtilise() {
         return this.#estUtilise;
     }
+
     /**
      * Fonction dessinant le bonus
      */
-    draw(){
-        if (!this.#estUtilise){
+    draw() {
+        if (!this.#estUtilise) {
             let longueur = 20;
             let largeur = 20;
             this.#niveau.ctx.beginPath();
             ctx.fillStyle = this.couleur;
-            this.#niveau.ctx.fillRect(this.positionX, this.positionY,longueur,largeur); //dessine un carée
+            this.#niveau.ctx.fillRect(this.positionX, this.positionY, longueur, largeur); //dessine un carée
             this.#niveau.ctx.fill();
             this.#niveau.ctx.closePath();
             super.nouvellePosition();
@@ -50,35 +53,32 @@ class Bonus extends ObjetAmovible {
      */
     detectionColision(){
         if (this.positionY >= this.#niveau.raquette.positionY 
-            && this.positionY<= this.#niveau.raquette.positionY+ this.#niveau.raquette.hauteur
+            && this.positionY <= this.#niveau.raquette.positionY+ this.#niveau.raquette.hauteur
             && this.positionX + 20 >= this.#niveau.raquette.positionX 
-            && this.positionX <= this.#niveau.raquette.positionX + this.#niveau.raquette.longueur){
+            && this.positionX <= this.#niveau.raquette.positionX + this.#niveau.raquette.longueur 
+            ) {
             this.#estUtilise = true;
             this.bonusAlea();
         }
     }
 
     /**
-     * Definition des avantage liés à la récupération du bonus au bonus
+     * Génération aléatoire du type de bonus
      */
     bonusAlea(){
+        // TODO: Make const for purcentage
         let alea = Math.random();
-        //nouvelle vie
-        if (alea<0.4){
+
+        if (alea<0.4) { //nouvelle vie
             this.#niveau.vie = this.#niveau.vie+1;
-        //NOUVELLE BALLE
-        }else if(alea <0.8){
+        } else if (alea <0.8) { //NOUVELLE BALLE
             this.#niveau.nouvelleBalle();
-        //augmentation taille raquette
-        }else{
+        } else { //augmentation taille raquette
             let limitTaille = 800;
-            if (this.#niveau.raquette.longueur * 2 < limitTaille){
+            if (this.#niveau.raquette.longueur * 2 < limitTaille) {
                 this.#niveau.raquette.longueur = this.#niveau.raquette.longueur * 1.5;
             }
         }
     }
-
-
-
 
 }
