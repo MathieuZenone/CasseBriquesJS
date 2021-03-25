@@ -33,34 +33,34 @@ class ObjetAmovible extends Objet{
     }
 
     // Getters & Setters
-    get vitesse(){
+    get vitesse() {
         return this.#vitesse;
     }
 
-    get directionX(){
+    get directionX() {
         return this.#xDir;
     }
 
-    get directionY(){
+    get directionY() {
         return this.#yDir;
     }
 
-    set vitesse(vitesse){
+    set vitesse(vitesse) {
         this.#vitesse = vitesse;
     }
 
-    set directionX(directionX){
-        this.#xDir = directionX;
+    set directionX(xDir) {
+        this.#xDir = xDir;
     }
 
-    set directionY(directionY){
-        this.#yDir = directionY;
+    set directionY(yDir) {
+        this.#yDir = yDir;
     }
 
     /**
      * Calcule la nouvelle position d'un objet pour lui permettre de se déplacer
      */
-    nouvellePosition(){
+    nouvellePosition() {
         this.positionX += this.#xDir  * this.#vitesse ;
         this.positionY += this.#yDir  * this.#vitesse ;
     }
