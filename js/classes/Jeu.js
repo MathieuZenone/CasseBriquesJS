@@ -1,11 +1,8 @@
 /*
- * Classe Jeux, classe principale du casse briques, le jeux représente le jeux à travers
- * les différents niveaux. Le jeux est composé d'un canvas qui représente le lieux du dessin 
- * du jeu et ctx qui représente le contenus de celui-ci. le Jeux à un attribut gameOver qui représente
- * l'etat de la partie et un attribut score qui représente les points acumulées mors de la partie.
- * Enfin le jeux à un niveau (celui en cours) qui est regénéré procéduralement à chaque victoire 
- * avec une incrémentation
- * de la difficulté. 
+ * Classe Jeu.
+ * Le jeux représente le jeu à travers les différents niveaux. 
+ * Il est composé d'un canvas qui représente la zone de dessin du jeu 
+ * et context qui représente le contenu de celui-ci. 
  */
 class Jeu {
     /* canvas du jeu */
@@ -30,7 +27,7 @@ class Jeu {
      * @param {canvas} canvas zone de dessin du jeu 
      * @param {*} ctx contenu de la zone de dessin
      */
-    constructor(canvas,ctx){
+    constructor(canvas, ctx) {
         this.#canvas = canvas;
         this.#ctx = ctx;
         this.#gameOver = false;
@@ -39,38 +36,42 @@ class Jeu {
     }
 
     /**
-     * Fonction Principale démarant une nouvelle partie 
-     * la partie va creer un nouveau niveau qui sera joué jusqu'à qu'il soit finis
-     * lorque le niveau est finis, soit il est perdu dans
-     * ce cas la fonction fin de partis et le gammeOver sont appelé sinon un niveau est regénéré et la partie
-     * continue.
+     * Permet de démarrer une nouvelle partie.
+     * La partie va créer un nouveau niveau qui doit être joué jusqu'à la fin de celui-ci (gagnant ou perdant).
+     * Une fois le niveau terminé, s'il est perdu alors le jeu s'arrête sinon on génère un nouveau niveau
+     * en conservant le nombre de points actuel du joueur.
      */
     async jouer(){
         let difficulte = 1;
         
         do {
-            this.#niveau = new Niveau(this.#canvas,this.#ctx,difficulte,  this.#scoreTotal,this.#vieTotal);
+            this.#niveau = new Niveau(this.#canvas, this.#ctx, difficulte, this.#scoreTotal, this.#vieTotal);
+
             await this.#niveau.start();
+
             this.#scoreTotal += this.#niveau.score;
             this.#vieTotal = this.#niveau.vie;
+            
+            // TODO: Add const on niveau.etat
             // si le niveau est gagné
             if (this.#niveau.etat == 1){
                 difficulte += getRandomInt(3);
             }
+
             //si le niveau est perdu
             if (this.#niveau.etat == 2){
                this.#gameOver = true;
                this.finJeux(); 
             }
 
-        }while (this.#gameOver == false);
+        } while (this.#gameOver == false);
 
     }
 
     /**
-     * Fonction finissant le jeu en cours en indiquant le score et proposant de rejouer
+     * TODO
      */
-    finJeux(){
-        //TODO : CODER LA METHODE
+    finJeu() {
+        // TODO: Display a message into canvas
     }
 }
