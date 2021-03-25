@@ -7,7 +7,7 @@
  * avec une incrémentation
  * de la difficulté. 
  */
-class Jeux {
+class Jeu {
     /* canvas du jeu */
     #canvas;
 
