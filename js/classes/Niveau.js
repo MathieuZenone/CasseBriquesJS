@@ -73,7 +73,7 @@ class Niveau {
         this.#balles = new Array();
         this.#ListBonus = new Array();
         this.#raquette = 
-            new raquette(postionXRaquette,postionYRaquette,couleurRaquette,7,0,0,hauteurRaquette,longueurRaquette,this.#canvas);
+            new Raquette(postionXRaquette,postionYRaquette,couleurRaquette,7,0,0,hauteurRaquette,longueurRaquette,this.#canvas);
 
         const instanceObjet = this;
         document.addEventListener("keydown",function(touche){instanceObjet.ecouteApuieTouche(touche);}, false);
