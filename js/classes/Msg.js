@@ -1,32 +1,32 @@
 
 /**
- * Classe msg sert à afficher un texte dans une zone de dessin,
- * cette classe est un extend d'objet
+ * Classe msg
+ * Le msg => message sert à afficher un texte dans une zone de dessin.
  */
-class Msg extends Objet{
+class Msg extends Objet {
  
 
     /**
-     * Constructeur initialisant uen brique avec une largeur
-     * @param {numeric} positionX position x de l'objet
-     * @param {numeric} positionY position y de l'objet
+     * État initial d'un msg
+     * @param {numeric} xPos position x de l'objet
+     * @param {numeric} yPos position y de l'objet
      * @param {numeric} couleur couleur de l'objet
      */
-    constructor(positionX,positionY,couleur){
-        super(positionX,positionY,couleur);
+    constructor(xPos, yPos, couleur){
+        super(xPos, yPos, couleur);
     }
 
 
     /**
-     * fonction dessinant une brique
+     * Dessine le message dans le canvas
      * @param {*} ctx 
      * @param {*} message message à afficher
      */
-    draw(ctx,message){
+    draw(ctx, message) {
         ctx.beginPath();
         ctx.fillStyle = this.couleur;
         ctx.font = '35px serif';
-        ctx.fillText(message, this.positionX , this.positionY);
+        ctx.fillText(message, this.positionX, this.positionY);
         ctx.fill();
         ctx.closePath();
     }
