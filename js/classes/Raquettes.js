@@ -94,7 +94,7 @@ class raquette extends ObjetAmovible {
         ctx.closePath();
 
         // on calcule la nouvelle position
-        super.nouvelPosition();
+        super.nouvellePosition();
         //on ecoute le clavier
         this.ecouteClavier();
         //on ecoute la souris

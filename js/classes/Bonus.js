@@ -40,7 +40,7 @@ class Bonus extends ObjetAmovible {
             this.#niveau.ctx.fillRect(this.positionX, this.positionY,longueur,largeur); //dessine un carée
             this.#niveau.ctx.fill();
             this.#niveau.ctx.closePath();
-            super.nouvelPosition();
+            super.nouvellePosition();
             this.detectionColision();
         }
     }

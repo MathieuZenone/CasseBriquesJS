@@ -46,7 +46,7 @@ class Balle extends ObjetAmovible {
         
         ctx.fill();
         ctx.closePath();
-        super.nouvelPosition();
+        super.nouvellePosition();
         this.collisionBordure(canvas);
 
         gainScore += this.colissionBriques(briques);

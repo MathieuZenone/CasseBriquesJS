@@ -1,7 +1,7 @@
 /*
- * Classe ObjetAmovible, cette classe définit un objet pouvant se deplacer 
- * dans un plan orthonormé. Cette classe est une classe fille de Objet.
- * Un ObjetAmovible est définit par une vitesse, une directionX et une 
+ * Classe ObjetAmovible.
+ * Un objetAmovible permet de se se déplacer dans un plan orthonormé.
+ * Un ObjetAmovible est porte une vitesse, une directionX et une 
  * directionY
  */
 class ObjetAmovible extends Objet{
@@ -10,39 +10,39 @@ class ObjetAmovible extends Objet{
     #vitesse;
 
     /* Direction X de l'ObjetAmovible */
-    #directionX;
+    #xDir;
 
     /* Direction Y de l'ObjetAmovible */
-    #directionY;
+    #yDir;
 
     /**
-     * Constructeur initialisant un ObjetAmovible avec une vitesse
-     * Une directionX et une directionY
-     * @param {numeric} positionX position x de l'objet
-     * @param {numeric} positionY position y de l'objet
+     * État initial d'un objet amovible
+     * 
+     * @param {numeric} xPos position x de l'objet
+     * @param {numeric} yPos position y de l'objet
      * @param {numeric} couleur couleur de l'objet
      * @param {Integer} vitesse vitesse de l'objet
-     * @param {numeric} directionX coordonnée x du vecteur de direction de l'objet
-     * @param {numeric} directionY coordonnée y du vecteur de direction de l'objet
+     * @param {numeric} xDir coordonnée x du vecteur de direction de l'objet
+     * @param {numeric} yDir coordonnée y du vecteur de direction de l'objet
      */
-    constructor(positionX,positionY,couleur,vitesse,directionX,directionY){
-        super(positionX,positionY,couleur);
+    constructor(xPos, yPos, couleur, vitesse, xDir, yDir) {
+        super(xPos, yPos, couleur);
         this.#vitesse = vitesse;
-        this.#directionX = directionX;
-        this.#directionY = directionY;
+        this.#xDir = xDir;
+        this.#yDir = yDir;
     }
 
-
+    // Getters & Setters
     get vitesse(){
         return this.#vitesse;
     }
 
     get directionX(){
-        return this.#directionX;
+        return this.#xDir;
     }
 
     get directionY(){
-        return this.#directionY;
+        return this.#yDir;
     }
 
     set vitesse(vitesse){
@@ -50,19 +50,18 @@ class ObjetAmovible extends Objet{
     }
 
     set directionX(directionX){
-        this.#directionX = directionX;
+        this.#xDir = directionX;
     }
 
     set directionY(directionY){
-        this.#directionY = directionY;
+        this.#yDir = directionY;
     }
 
     /**
-     * Calcule la nouvelle position d'un objet grace à sa vitesse
-     * et son vecteur de direction
+     * Calcule la nouvelle position d'un objet pour lui permettre de se déplacer
      */
-    nouvelPosition(){
-        this.positionX += this.#directionX  * this.#vitesse ;
-        this.positionY += this.#directionY  * this.#vitesse ;
+    nouvellePosition(){
+        this.positionX += this.#xDir  * this.#vitesse ;
+        this.positionY += this.#yDir  * this.#vitesse ;
     }
 }
